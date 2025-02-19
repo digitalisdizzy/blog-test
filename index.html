@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://place1.dev/main.css">
     <title>Blog</title>
 </head>
 <body>
+    <h1 class="text-center">Blog</h1>
+
+    <ul>
+
+    </ul>
+
     <script>
+        import YAML from 'https://cdn.jsdelivr.net/npm/yaml@2.7/browser/index.js'
+        console.log(YAML.parse(`hi: hi there
+        hello: testing 123`))
+    </script>
+
+    <script>
+        const rawBaseUrl = "https://raw.githubusercontent.com/digitalisdizzy/blog-test/refs/heads/main/"
+
         fetch("https://api.github.com/repos/digitalisdizzy/blog-test/git/trees/main?recursive=1").then(r => r.json().then(data => {
             const posts = data.tree.filter(item => !item.path.includes("/") && item.path.endsWith(".md"))
             console.log(posts)
