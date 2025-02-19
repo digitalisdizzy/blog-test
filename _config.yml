@@ -8,4 +8,3 @@ defaults:
       path: ""
     values:
       layout: "default"
-permalink: /blog-test/:slug

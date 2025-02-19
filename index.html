@@ -1,19 +1,16 @@
----
----
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Blog</title>
-    </head>
-    <body>
-        <h1>Posts:</h1>
-        <ul>
-            {% for post in site.posts %}
-                <li>
-                    <p>{{ post.path }}</p>
-                    <a href="https://digital.place1.dev/blog-test/{{ post.slug }}">{{ post.title }}</a>
-                </li>
-            {% endfor %}
-      </ul>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+</head>
+<body>
+    <script>
+        fetch("https://api.github.com/repos/digitalisdizzy/blog-test/git/trees/main?recursive=1").then(r => r.json().then(data => {
+            const posts = data.tree.filter(item => !item.path.includes("/") && item.path.endsWith(".md"))
+            console.log(posts)
+        })).catch(console.error)
+    </script>
+</body>
 </html>
