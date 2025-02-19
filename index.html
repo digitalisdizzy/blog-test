@@ -36,7 +36,7 @@
             const posts = data.tree.filter(item => !item.path.includes("/") && item.path.endsWith(".md"))
 
             posts.forEach(item => {
-                fetch(`https://raw.githubusercontent.com/digitalisdizzy/blog-test/refs/heads/main/${item.path}`).then(r2 => r.text().then(raw => {
+                fetch(`https://raw.githubusercontent.com/digitalisdizzy/blog-test/refs/heads/main/${item.path}`).then(r2 => r2.text().then(raw => {
                     const post = extractFrontMatter(raw)
                     const el = `<li><a href="/blog-test/${item.path.split(".")[0]}">${post.frontMatter.title || item.path.split(".")[0]}</a></li>\n`
                     document.getElementById("posts").innerHTML += el
