@@ -39,23 +39,28 @@
             };
         }
 
+        function showError(e){
+            document.getElementById("posts").innerHTML += `<div class="text-center">
+            <h3><b>Error getting posts</b></h3>
+            <i>${e}</i></div class="text-center">`
+        }
+
         fetch("https://api.github.com/repos/digitalisdizzy/blog-test/git/trees/main?recursive=1").then(r => r.json().then(data => {
             const posts = data.tree.filter(item => !item.path.includes("/") && item.path.endsWith(".md"))
 
             posts.forEach(item => {
                 fetch(`https://raw.githubusercontent.com/digitalisdizzy/blog-test/refs/heads/main/${item.path}`).then(r2 => r2.text().then(raw => {
                     const post = extractFrontMatter(raw)
-                    const el = `<li><a href="/blog-test/${item.path.split(".")[0]}">${post.frontMatter.title || item.path.split(".")[0]}</a></li>\n`
 
-                    const el2 = `<a class="post" href="/blog-test/${item.path.split(".")[0]}">
+                    const el = `<a class="post" href="/blog-test/${item.path.split(".")[0]}">
             <h1>${post.frontMatter.title || item.path.split(".")[0]}</h1>
             <p>${post.body}</p>
         </a>`
 
-                    document.getElementById("posts").innerHTML += el2
-                }))
+                    document.getElementById("posts").innerHTML += el
+                })).catch(showError)
             });
-        })).catch(console.error)
+        })).catch(showError)
     </script>
 </body>
 </html>
