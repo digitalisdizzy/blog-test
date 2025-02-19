@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://place1.dev/main.css">
+    <link rel="stylesheet" href="stylesheet.css">
     <title>Blog</title>
 </head>
 <body>
     <h1 class="text-center">Blog</h1>
 
-    <ul id="posts">
+    <br><br>
 
-    </ul>
+    <p class="text-center"><b>Welcome to my blog!</b> I'll just post some stuff mainly about game dev on Roblox but also some other stuff.</p>
+
+    <br><br>
+
+    <h2 class="text-center">Posts</h2>
+
+    <div id="posts">
+        
+    </div>
 
     <script type="module">
 
@@ -37,7 +46,13 @@
                 fetch(`https://raw.githubusercontent.com/digitalisdizzy/blog-test/refs/heads/main/${item.path}`).then(r2 => r2.text().then(raw => {
                     const post = extractFrontMatter(raw)
                     const el = `<li><a href="/blog-test/${item.path.split(".")[0]}">${post.frontMatter.title || item.path.split(".")[0]}</a></li>\n`
-                    document.getElementById("posts").innerHTML += el
+
+                    const el2 = `<a class="post" href="/blog-test/${item.path.split(".")[0]}">
+            <h1>${post.frontMatter.title || item.path.split(".")[0]}</h1>
+            <p>${post.body}</p>
+        </a>`
+
+                    document.getElementById("posts").innerHTML += el2
                 }))
             });
         })).catch(console.error)
