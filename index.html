@@ -9,22 +9,39 @@
 <body>
     <h1 class="text-center">Blog</h1>
 
-    <ul>
+    <ul id="posts">
 
     </ul>
 
     <script type="module">
         import YAML from 'https://cdn.jsdelivr.net/npm/yaml@2.7/browser/index.js'
-        console.log(YAML.parse(`hi: hi there
-        hello: testing 123`))
+        
     </script>
 
     <script>
-        const rawBaseUrl = "https://raw.githubusercontent.com/digitalisdizzy/blog-test/refs/heads/main/"
+
+        function extractFrontMatter(content) {
+            const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)/);
+            if (!match) {
+                return { frontMatter: null, body: content.trim() };
+            }
+
+            return {
+                frontMatter: YAML.parse(match[1]),
+                body: match[2].trim()
+            };
+        }
 
         fetch("https://api.github.com/repos/digitalisdizzy/blog-test/git/trees/main?recursive=1").then(r => r.json().then(data => {
             const posts = data.tree.filter(item => !item.path.includes("/") && item.path.endsWith(".md"))
-            console.log(posts)
+
+            posts.forEach(item => {
+                fetch(`https://raw.githubusercontent.com/digitalisdizzy/blog-test/refs/heads/main/${item.path}`).then(r2 => r.text().then(raw => {
+                    const post = extractFrontMatter(raw)
+                    const el = `<li><a href="/blog-test/${item.path.split(".")[0]}">${post.frontMatter.title || item.path.split(".")[0]}</a></li>\n`
+                    document.getElementById("posts").innerHTML += el
+                }))
+            });
         })).catch(console.error)
     </script>
 </body>
